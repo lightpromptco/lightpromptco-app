@@ -1,9 +1,16 @@
-import OpenAI from 'openai';
+import OpenAI from "openai";
 
-// Initialize OpenAI with your API key
+// 💡 Fail fast if the key isn’t provided
+if (!process.env.OPENAI_API_KEY) {
+  throw new Error("⚠️ Missing OPENAI_API_KEY env var");
+}
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY || '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',
+  apiKey: process.env.OPENAI_API_KEY,  // ← no fallback
 });
+
+export default openai;
+
 
 export async function generateEmotionalResponse(
   userMessage: string,
