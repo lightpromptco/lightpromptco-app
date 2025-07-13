@@ -1,4 +1,4 @@
-import { supabase } from '../../supabaseClient';
+import { supabase } from "../../lib/supabaseClient";
 
 // Soul Technology message interface for Supabase integration
 export interface Message {
