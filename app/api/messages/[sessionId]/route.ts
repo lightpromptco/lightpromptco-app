@@ -2,33 +2,26 @@ import { NextResponse } from 'next/server'
 
 export async function GET(
   request: Request,
-  { params }: { params: { sessionId: string } }
+  { params }      // no explicit type here
 ) {
   try {
     const messages = await storage.getMessagesBySession(params.sessionId)
     return NextResponse.json(messages)
-  } catch (error) {
-    console.error('Error fetching messages:', error)
-    return NextResponse.json(
-      { error: 'Failed to fetch messages' },
-      { status: 500 }
-    )
+  } catch {
+    return NextResponse.json({ error: 'Failed to fetch messages' }, { status: 500 })
   }
 }
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { sessionId: string } }
+  { params }      // again, let Next infer the type
 ) {
   try {
     await storage.clearSession(params.sessionId)
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Error clearing session:', error)
-    return NextResponse.json(
-      { error: 'Failed to clear session' },
-      { status: 500 }
-    )
+  } catch {
+    return NextResponse.json({ error: 'Failed to clear session' }, { status: 500 })
   }
 }
+
 
