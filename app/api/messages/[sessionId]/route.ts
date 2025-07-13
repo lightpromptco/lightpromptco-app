@@ -1,8 +1,7 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { storage } from '../../storage'
+import { NextResponse } from 'next/server'
 
 export async function GET(
-  request: NextRequest,
+  request: Request,
   { params }: { params: { sessionId: string } }
 ) {
   try {
@@ -18,7 +17,7 @@ export async function GET(
 }
 
 export async function DELETE(
-  request: NextRequest,
+  request: Request,
   { params }: { params: { sessionId: string } }
 ) {
   try {
@@ -32,3 +31,4 @@ export async function DELETE(
     )
   }
 }
+
