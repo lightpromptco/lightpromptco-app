@@ -1,0 +1,5 @@
+# macOS folder junk
+**/.DS_Store
+
+# Env files with secrets
+.env*
