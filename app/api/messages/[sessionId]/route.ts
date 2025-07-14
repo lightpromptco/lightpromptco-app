@@ -1,27 +1,39 @@
+// app/api/messages/[sessionId]/route.ts
 import { NextResponse } from 'next/server'
+import { storage } from '../../storage'
 
 export async function GET(
   request: Request,
-  { params }      // no explicit type here
+  context      // give the full context object a name
 ) {
+  const sessionId = context.params.sessionId
+
   try {
-    const messages = await storage.getMessagesBySession(params.sessionId)
+    const messages = await storage.getMessagesBySession(sessionId)
     return NextResponse.json(messages)
-  } catch {
-    return NextResponse.json({ error: 'Failed to fetch messages' }, { status: 500 })
+  } catch (error) {
+    console.error('Error fetching messages:', error)
+    return NextResponse.json(
+      { error: 'Failed to fetch messages' },
+      { status: 500 }
+    )
   }
 }
 
 export async function DELETE(
   request: Request,
-  { params }      // again, let Next infer the type
+  context
 ) {
+  const sessionId = context.params.sessionId
+
   try {
-    await storage.clearSession(params.sessionId)
+    await storage.clearSession(sessionId)
     return NextResponse.json({ success: true })
-  } catch {
-    return NextResponse.json({ error: 'Failed to clear session' }, { status: 500 })
+  } catch (error) {
+    console.error('Error clearing session:', error)
+    return NextResponse.json(
+      { error: 'Failed to clear session' },
+      { status: 500 }
+    )
   }
-}
-
-
+  
