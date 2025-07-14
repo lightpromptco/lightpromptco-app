@@ -1,18 +1,14 @@
 // app/api/messages/[sessionId]/route.ts
 import { NextResponse } from 'next/server'
-import { storage } from '../../storage'
+import { storage } from '../../../lib/supabaseClient'  // adjust the import path if needed
 
-export async function GET(
-  request: Request,
-  context      // give the full context object a name
-) {
+export async function GET(request: Request, context: any) {
   const sessionId = context.params.sessionId
-
   try {
     const messages = await storage.getMessagesBySession(sessionId)
     return NextResponse.json(messages)
-  } catch (error) {
-    console.error('Error fetching messages:', error)
+  } catch (err) {
+    console.error('Error fetching messages:', err)
     return NextResponse.json(
       { error: 'Failed to fetch messages' },
       { status: 500 }
@@ -20,20 +16,16 @@ export async function GET(
   }
 }
 
-export async function DELETE(
-  request: Request,
-  context
-) {
+export async function DELETE(request: Request, context: any) {
   const sessionId = context.params.sessionId
-
   try {
     await storage.clearSession(sessionId)
     return NextResponse.json({ success: true })
-  } catch (error) {
-    console.error('Error clearing session:', error)
+  } catch (err) {
+    console.error('Error clearing session:', err)
     return NextResponse.json(
       { error: 'Failed to clear session' },
       { status: 500 }
     )
   }
-  
+}
