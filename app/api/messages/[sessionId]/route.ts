@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
+// app/api/messages/[sessionId]/route.ts
+import { NextResponse } from 'next/server'
 import { storage } from '../../../storage'
 
-export async function GET(request: NextRequest, context) {
-  const { sessionId } = context.params
+export async function GET(request, { params }) {
+  const { sessionId } = params
+
   try {
     const messages = await storage.getMessagesBySession(sessionId)
     return NextResponse.json(messages)
@@ -15,8 +17,9 @@ export async function GET(request: NextRequest, context) {
   }
 }
 
-export async function DELETE(request: NextRequest, context) {
-  const { sessionId } = context.params
+export async function DELETE(request, { params }) {
+  const { sessionId } = params
+
   try {
     await storage.clearSession(sessionId)
     return NextResponse.json({ success: true })
