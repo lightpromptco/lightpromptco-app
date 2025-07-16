@@ -4,9 +4,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { storage } from '../../../storage'
 
 export async function GET(request: NextRequest) {
-  // Pull sessionId from the URL
-  const parts = new URL(request.url).pathname.split('/')
-  const sessionId = parts[parts.length - 1]
+  // Grab the sessionId from the URL
+  const sessionId = request.nextUrl.pathname.split('/').pop()!
 
   try {
     const messages = await storage.getMessagesBySession(sessionId)
@@ -21,9 +20,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  // Pull sessionId from the URL
-  const parts = new URL(request.url).pathname.split('/')
-  const sessionId = parts[parts.length - 1]
+  const sessionId = request.nextUrl.pathname.split('/').pop()!
 
   try {
     await storage.clearSession(sessionId)
