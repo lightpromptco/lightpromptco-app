@@ -1,13 +1,13 @@
 // app/api/messages/[sessionId]/route.ts
-
 import { NextRequest, NextResponse } from 'next/server'
-import { storage } from '../../../storage'
+import { storage } from '../../../../storage'
 
 export async function GET(request: NextRequest) {
-  // Grab the sessionId from the URL
-  const sessionId = request.nextUrl.pathname.split('/').pop()!
-
   try {
+    // grab the last segment of the path as sessionId
+    const segments = request.nextUrl.pathname.split('/').filter(Boolean)
+    const sessionId = segments[segments.length - 1]
+
     const messages = await storage.getMessagesBySession(sessionId)
     return NextResponse.json(messages)
   } catch (err) {
@@ -20,9 +20,11 @@ export async function GET(request: NextRequest) {
 }
 
 export async function DELETE(request: NextRequest) {
-  const sessionId = request.nextUrl.pathname.split('/').pop()!
-
   try {
+    // same extraction for DELETE
+    const segments = request.nextUrl.pathname.split('/').filter(Boolean)
+    const sessionId = segments[segments.length - 1]
+
     await storage.clearSession(sessionId)
     return NextResponse.json({ success: true })
   } catch (err) {
