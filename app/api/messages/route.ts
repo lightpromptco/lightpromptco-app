@@ -1,3 +1,4 @@
+// app/api/messages/route.ts
 import { NextRequest, NextResponse } from 'next/server'
 import { storage } from '../storage'
 import { z } from 'zod'
@@ -21,7 +22,7 @@ export async function POST(request: NextRequest) {
 
     // Generate AI response
     const messages = await storage.getMessagesBySession(sessionId)
-    const { generateEmotionalResponse } = await import('../openai')
+    const { generateEmotionalResponse } = await import('../../openai')
     const aiResponse = await generateEmotionalResponse(
       content,
       messages,

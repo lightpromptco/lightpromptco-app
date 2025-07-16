@@ -1,9 +1,8 @@
-// app/api/messages/[sessionId]/route.ts
-import { NextResponse } from 'next/server'
-import { storage } from '../../../lib/supabaseClient'  // adjust the import path if needed
+import { NextRequest, NextResponse } from 'next/server'
+import { storage } from '../../../storage'
 
-export async function GET(request: Request, context: any) {
-  const sessionId = context.params.sessionId
+export async function GET(request: NextRequest, context) {
+  const { sessionId } = context.params
   try {
     const messages = await storage.getMessagesBySession(sessionId)
     return NextResponse.json(messages)
@@ -16,8 +15,8 @@ export async function GET(request: Request, context: any) {
   }
 }
 
-export async function DELETE(request: Request, context: any) {
-  const sessionId = context.params.sessionId
+export async function DELETE(request: NextRequest, context) {
+  const { sessionId } = context.params
   try {
     await storage.clearSession(sessionId)
     return NextResponse.json({ success: true })
