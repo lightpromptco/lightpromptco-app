@@ -1,22 +1,12 @@
-// app/api/messages/[sessionId]/route.ts
-import { NextRequest, NextResponse } from 'next/server'
-import { storage } from '../../../../storage'
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-  try {
-    // grab the last segment of the path as sessionId
-    const segments = request.nextUrl.pathname.split('/').filter(Boolean)
-    const sessionId = segments[segments.length - 1]
+  // Split the path and get the sessionId segment
+  const segments = request.nextUrl.pathname.split('/').filter(Boolean);
+  const sessionId = segments[segments.length - 1];
 
-    const messages = await storage.getMessagesBySession(sessionId)
-    return NextResponse.json(messages)
-  } catch (err) {
-    console.error('Error fetching messages:', err)
-    return NextResponse.json(
-      { error: 'Failed to fetch messages' },
-      { status: 500 }
-    )
-  }
+  // TODO: Use sessionId for your logic (fetch messages, etc)
+  return NextResponse.json({ message: `Session ID is: ${sessionId}` });
 }
 
 export async function DELETE(request: NextRequest) {
